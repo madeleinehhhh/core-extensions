@@ -2,7 +2,7 @@
 /**
  * Plugin Name: AP Core Extensions
  * Description: This plugin contains extended functionality. <strong>It should always be activated</strong>.
- * Version:     1.0.0
+ * Version:     1.0.5
  * Author:      Madeleine Herritage
  * Author URI:  https://madeleine.dev
  *
@@ -24,4 +24,4 @@
 // Plugin directory
 define( 'EA_DIR' , plugin_dir_path( __FILE__ ) );
 
-require_once( EA_DIR . '/inc/customposttypes.php' );
+require_once( EA_DIR . '/inc/cpt-teammember.php' );
