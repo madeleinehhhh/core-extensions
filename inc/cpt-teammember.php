@@ -83,3 +83,13 @@ function ap_enqueue_editor_assets() {
 	);
 }
 add_action( 'enqueue_block_editor_assets', 'ap_enqueue_editor_assets' );
+
+add_filter( 'post_class', 'ap_team_add_contact_toggle_class', 10, 3 );
+
+function ap_team_add_contact_toggle_class( $classes, $class, $post_id ) {
+	if ( get_post_type( $post_id ) === 'ap_team' ) {
+		$show_contact = get_post_meta( $post_id, 'ap_show_contact_info', true );
+		$classes[] = $show_contact ? 'show-contact' : 'hide-contact';
+	}
+	return $classes;
+}
