@@ -70,8 +70,54 @@ function ap_register_contact_info_meta() {
 			return current_user_can('edit_posts');
 		},
 	));
+	register_post_meta( 'ap_team', 'ap_team_no_page_link', array(
+		'show_in_rest'      => true,
+		'single'            => true,
+		'type'              => 'boolean',
+		'auth_callback'     => function() {
+			return current_user_can( 'edit_posts' );
+		},
+	));
 }
 add_action('init', 'ap_register_contact_info_meta');
+
+function ap_add_no_link_attribute_to_query_loop( $block_content, $block ) {
+    if (
+        isset( $block['blockName'] ) &&
+        $block['blockName'] === 'core/post-template' &&
+        ! empty( $block['innerBlocks'] )
+    ) {
+        foreach ( $block['innerBlocks'] as &$innerBlock ) {
+            if ( $innerBlock['blockName'] === 'core/post-template' ) {
+                // Recurse if nested
+                $innerBlock['innerBlocks'] = array_map( function( $child ) {
+                    return ap_add_no_link_attribute_to_query_loop( $child['innerContent'], $child );
+                }, $innerBlock['innerBlocks'] );
+            }
+        }
+
+        // Parse the DOM to add the data attribute
+        $post_id = get_the_ID();
+        if ( ! $post_id ) {
+            return $block_content;
+        }
+
+        $no_link = get_post_meta( $post_id, 'ap_team_no_page_link', true );
+
+        if ( $no_link ) {
+            // Add data-no-page-link to the wrapper article
+            $block_content = preg_replace(
+                '/<article\b(.*?)>/',
+                '<article$1 data-no-page-link="true">',
+                $block_content,
+                1
+            );
+        }
+    }
+
+    return $block_content;
+}
+add_filter( 'render_block_core/post-template', 'ap_add_no_link_attribute_to_query_loop', 10, 2 );
 
 function ap_enqueue_editor_assets() {
 	wp_enqueue_script(
