@@ -2,7 +2,7 @@
 /**
  * Plugin Name: AP Core Extensions
  * Description: This plugin contains extended functionality. <strong>It should always be activated</strong>.
- * Version:     1.1.3
+ * Version:     1.1.4
  * Author:      Madeleine Herritage
  * Author URI:  https://madeleine.dev
  *
