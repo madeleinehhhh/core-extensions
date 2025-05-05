@@ -138,7 +138,7 @@ function ap_team_add_contact_toggle_class( $classes, $class, $post_id ) {
 		$show_contact = get_post_meta( $post_id, 'ap_team_show_contact', true );
 		$classes[] = $show_contact ? 'show-contact' : 'hide-contact';
 		$no_link = get_post_meta( $post_id, 'ap_team_no_page_link', true );
-		$classes[] = $no_link ? 'page-link' : 'no-link';
+		$classes[] = $no_link ? 'no-page-link' : 'page-link';
 	}
 	return $classes;
 }
